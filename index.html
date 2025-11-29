@@ -1,76 +1,498 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="fr">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.4">
-  <style type="text/css">
-    body {background-color: #f7f7f7}
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.8px '.SF NS'; color: #18956c; -webkit-text-stroke: #18956c}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.8px '.SF NS'; color: #585e6d; -webkit-text-stroke: #585e6d}
-    p.p3 {margin: 0.0px 0.0px 0.0px 0.0px; font: 11.0px 'Helvetica Neue'; color: #000000; color: rgba(0, 0, 0, 0.85); -webkit-text-stroke: rgba(0, 0, 0, 0.85)}
-    p.p4 {margin: 0.0px 0.0px 12.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #0c0c0c; -webkit-text-stroke: #0c0c0c}
-    p.p5 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #0c0c0c; -webkit-text-stroke: #0c0c0c}
-    p.p6 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px '.SF NS'; color: #18191a; -webkit-text-stroke: #18191a}
-    p.p7 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.4px Times; color: #1634cf; -webkit-text-stroke: #1634cf; min-height: 10.0px}
-    p.p8 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px '.SF NS'; color: #1d48e6; -webkit-text-stroke: #1d48e6}
-    p.p9 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px '.SF NS'; color: #1d48e6; -webkit-text-stroke: #1d48e6; background-color: #ffffff; min-height: 12.0px}
-    p.p10 {margin: 0.0px 0.0px 0.0px 0.0px; font: 10.5px '.SF NS'; color: #1d48e6; -webkit-text-stroke: #1d48e6; background-color: #ffffff}
-    p.p11 {margin: 0.0px 0.0px 0.0px 0.0px; font: 8.4px 'Helvetica Neue'; color: #1634cf; -webkit-text-stroke: #1634cf}
-    p.p13 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Helvetica Neue'; color: #0c0c0c; -webkit-text-stroke: #0c0c0c; min-height: 15.0px}
-    span.s1 {font-kerning: none}
-    span.s2 {font-kerning: none; background-color: #b3b3b3}
-    span.s3 {font: 12.0px 'Helvetica Neue'; font-kerning: none; color: #0c0c0c; -webkit-text-stroke: 0px #0c0c0c}
-    span.s4 {font: 8.4px 'Helvetica Neue'; font-kerning: none; color: #1634cf; background-color: #ebf3ff; -webkit-text-stroke: 0px #1634cf}
-    span.s5 {font-kerning: none; background-color: #ffffff}
-    span.s6 {font-kerning: none; background-color: #ebf3ff}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabarit Pédagogique : De la Config à l'Utilisation</title>
+
+    <!-- Tailwind pour la mise en forme rapide -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Icônes Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        /* Police proche de celle d'OpenAI */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: #f9f9f9;
+            color: #0d0d0d;
+        }
+
+        /* Styles spécifiques OpenAI */
+        .openai-input {
+            border: 1px solid #e5e5e5;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            width: 100%;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.15s ease;
+            background-color: white;
+            color: #374151;
+        }
+
+        .pedagogical-text {
+            color: #2563eb;
+            font-style: italic;
+            font-weight: 500;
+        }
+
+        .openai-label {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            display: block;
+            color: #202123;
+        }
+
+        /* Indicateurs visuels */
+        .info-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #eff6ff;
+            color: #1d4ed8;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-bottom: 6px;
+            border: 1px solid #dbeafe;
+        }
+
+        .alert-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #fef2f2;
+            color: #b91c1c;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-bottom: 6px;
+            border: 1px solid #fee2e2;
+        }
+
+        /* Onglets de navigation */
+        .nav-tab {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            color: #6b7280;
+        }
+
+        .nav-tab.active {
+            border-bottom: 2px solid #10a37f;
+            color: #10a37f;
+        }
+
+        /* Styles Vue Finale */
+        .final-view-container {
+            display: none; /* Masqué par défaut */
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            background-color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .final-view-container.active {
+            display: flex;
+        }
+
+        .gpt-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 0.5rem;
+        }
+
+        .gpt-author {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .gpt-description {
+            max-width: 600px;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #333;
+            margin-bottom: 3rem;
+        }
+
+        .conversation-starters-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
+            gap: 12px;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .starter-card {
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 16px;
+            text-align: left;
+            font-size: 0.875rem;
+            color: #404040;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            background-color: white;
+        }
+
+        .starter-card:hover {
+            background-color: #f9f9f9;
+        }
+
+        /* Notes pédagogiques Vue Finale */
+        .annotation-dot {
+            width: 24px;
+            height: 24px;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            position: absolute;
+            cursor: help;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            z-index: 50;
+        }
+
+        .annotation-tooltip {
+            position: absolute;
+            background: #1e293b;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            width: 200px;
+            text-align: left;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            z-index: 100;
+        }
+
+        .annotation-dot:hover .annotation-tooltip {
+            display: block;
+        }
+
+        @media print {
+            .no-print { display: none; }
+            body { background-color: white; }
+            .h-screen { height: auto; display: block; }
+            .overflow-y-auto { overflow: visible; }
+            .nav-tabs { display: none; }
+            .final-view-container { display: flex !important; page-break-before: always; margin-top: 2cm;}
+            #view-config { display: block; }
+        }
+    </style>
+
+    <script>
+        function switchTab(tabName) {
+            // Masquer toutes les vues
+            document.getElementById('view-config').style.display = 'none';
+            document.getElementById('view-final').classList.remove('active');
+
+            // Désactiver les onglets
+            document.getElementById('tab-config').classList.remove('active');
+            document.getElementById('tab-final').classList.remove('active');
+
+            // Activer la vue demandée
+            if (tabName === 'config') {
+                document.getElementById('view-config').style.display = 'flex';
+                document.getElementById('tab-config').classList.add('active');
+            } else {
+                document.getElementById('view-final').classList.add('active');
+                document.getElementById('tab-final').classList.add('active');
+            }
+        }
+    </script>
 </head>
-<body>
-<p class="p1"><span class="s1"><b>1. Configuration (Éditeur)</b></span></p>
-<p class="p2"><span class="s1"><b>2. Résultat Final (Utilisateur)</b></span></p>
-<p class="p3"><span class="s2">Imprimer</span></p>
-<p class="p3"><span class="s2">Créer</span><span class="s3"> </span><span class="s2">Configurer</span></p>
-<p class="p4"><span class="s1"><b>Créer :</b> Assistant conversationnel.<br>
-<b>Configurer :</b> Mode manuel expert (Celui que vous utilisez).</span></p>
-<p class="p5"><span class="s1">Cliquez ici pour ajouter le logo de l'établissement</span></p>
-<p class="p6"><span class="s1"><b>Nom</b></span></p>
-<p class="p7"><span class="s1"><b></b></span><br></p>
-<p class="p8"><span class="s4">Ce qui est attendu :</span><span class="s3"> </span><span class="s5"><i>Le titre officiel de l'outil (ex: GPT PERDIR)</i><i></i></span></p>
-<p class="p4"><span class="s1">Soyez court et explicite.</span></p>
-<p class="p6"><span class="s1"><b>Description</b></span></p>
-<p class="p7"><span class="s1"><b></b></span><br></p>
-<p class="p8"><span class="s4">Ce qui est attendu :</span><span class="s3"> </span><span class="s5"><i>Une phrase courte expliquant la fonction principale.</i><i></i></span></p>
-<p class="p4"><span class="s1">Sert à informer l'utilisateur.</span></p>
-<p class="p6"><span class="s1"><b>Instructions</b></span></p>
-<p class="p7"><span class="s1"><b></b></span><br></p>
-<p class="p8"><span class="s4">Cœur du système (Le Prompt) :</span><span class="s3"> </span><span class="s5"><i>Définissez le "personnage" de l'IA :</i></span></p>
-<p class="p9"><span class="s1"><i></i></span><br></p>
-<p class="p10"><span class="s1"><i>1. LE RÔLE : Qui est-il ? (ex: Expert juridique...)</i></span></p>
-<p class="p10"><span class="s1"><i>2. LA MISSION : Que doit-il faire ? (ex: Analyser, Synthétiser...)</i></span></p>
-<p class="p10"><span class="s1"><i>3. LE TON : (ex: Formel, neutre, institutionnel...)</i></span></p>
-<p class="p10"><span class="s1"><i>4. LES CONTRAINTES : Ce qu'il ne doit JAMAIS faire.</i></span></p>
-<p class="p6"><span class="s1"><b>Amorces de conversation</b></span></p>
-<p class="p7"><span class="s1"><b></b></span><br></p>
-<p class="p11"><span class="s6">Raccourcis utilisateurs :</span></p>
-<p class="p8"><span class="s5"><i>Exemple de tâche récurrente n°1</i></span><span class="s3"> </span><span class="s5"><i>Exemple de tâche récurrente n°2</i><i></i></span></p>
-<p class="p6"><span class="s1"><b>Base de connaissances</b></span></p>
-<p class="p4"><span class="s1">Déposez vos fichiers de référence ici</span></p>
-<p class="p4"><span class="s1">(Règlement intérieur, Projet d'établissement...)</span></p>
-<p class="p6"><span class="s1"><b>Fonctionnalités</b></span></p>
-<p class="p5"><span class="s1">Recherche sur le Web</span></p>
-<p class="p4"><span class="s1">Navigation internet pour sources récentes.</span></p>
-<p class="p5"><span class="s1">Interpréteur de code</span></p>
-<p class="p4"><span class="s1">Pour analyser Excel, CSV, PDF et graphiques.</span></p>
-<p class="p5"><span class="s1">Aperçu</span></p>
-<h3 style="margin: 0.0px 0.0px 14.0px 0.0px; font: 14.0px 'Helvetica Neue'; color: #0c0c0c; -webkit-text-stroke: #0c0c0c"><span class="s1"><b>Zone de Test (Itération)</b></span></h3>
-<p class="p4"><span class="s1">Simule la vue utilisateur. Testez ici, corrigez à gauche.</span></p>
-<p class="p13"><span class="s1"></span><br></p>
-<p class="p13"><span class="s1"></span><br></p>
-<p class="p13"><span class="s1"></span><br></p>
-<p class="p13"><span class="s1"></span><br></p>
-<p class="p13"><span class="s1"></span><br></p>
+
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <!-- Header Navigation Global -->
+    <div class="h-14 border-b border-gray-200 bg-white flex items-center justify-between px-4 shrink-0 no-print">
+        <div class="flex gap-6">
+            <div id="tab-config" class="nav-tab active" onclick="switchTab('config')">
+                <i class="fas fa-tools mr-2"></i>1. Configuration (Éditeur)
+            </div>
+            <div id="tab-final" class="nav-tab" onclick="switchTab('final')">
+                <i class="fas fa-desktop mr-2"></i>2. Résultat Final (Utilisateur)
+            </div>
+        </div>
+        <button onclick="window.print()" class="text-sm text-gray-500 hover:text-gray-900">
+            <i class="fas fa-print mr-1"></i> Imprimer
+        </button>
+    </div>
+
+    <!-- VUE 1 : CONFIGURATION (Split View) -->
+    <div id="view-config" class="flex-1 flex overflow-hidden">
+
+        <!-- GAUCHE : CONFIGURER -->
+        <div class="w-1/2 border-r border-gray-200 bg-white overflow-y-auto p-6 relative">
+
+            <!-- Toggle Créer/Configurer -->
+            <div class="flex flex-col items-center mb-6">
+                <div class="bg-gray-100 p-1 rounded-lg inline-flex mb-2">
+                    <button class="px-4 py-1 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700">
+                        Créer
+                    </button>
+                    <button class="px-4 py-1 rounded-md text-sm font-medium bg-white shadow-sm text-gray-900">
+                        Configurer
+                    </button>
+                </div>
+                <p class="text-[10px] text-gray-400 text-center max-w-xs leading-tight">
+                    <strong>Créer :</strong> Assistant conversationnel.<br>
+                    <strong>Configurer :</strong> Mode manuel expert (Celui que vous utilisez).
+                </p>
+            </div>
+
+            <!-- Logo Upload -->
+            <div class="flex justify-center mb-6">
+                <div class="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 text-center p-2">
+                    <span class="text-[10px] text-gray-500">
+                        Cliquez ici pour ajouter le logo de l'établissement
+                    </span>
+                </div>
+            </div>
+
+            <!-- Nom -->
+            <div class="mb-5">
+                <label class="openai-label">Nom</label>
+                <div class="info-badge">
+                    <i class="fas fa-info-circle mr-1"></i> Ce qui est attendu :
+                </div>
+                <input type="text" class="openai-input pedagogical-text"
+                       value="Le titre officiel de l'outil (ex: GPT PERDIR)" readonly>
+                <p class="text-xs text-gray-500 mt-1">Soyez court et explicite.</p>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-5">
+                <label class="openai-label">Description</label>
+                <div class="info-badge">
+                    <i class="fas fa-info-circle mr-1"></i> Ce qui est attendu :
+                </div>
+                <input type="text" class="openai-input pedagogical-text"
+                       value="Une phrase courte expliquant la fonction principale." readonly>
+                <p class="text-xs text-gray-500 mt-1">Sert à informer l'utilisateur.</p>
+            </div>
+
+            <!-- Instructions -->
+            <div class="mb-5">
+                <label class="openai-label">Instructions</label>
+                <div class="alert-badge">
+                    <i class="fas fa-brain mr-1"></i> Cœur du système (Le Prompt) :
+                </div>
+                <textarea class="openai-input pedagogical-text h-56 leading-relaxed" readonly>
+Définissez le "personnage" de l'IA :
+
+1. LE RÔLE : Qui est-il ? (ex: Expert juridique...)
+2. LA MISSION : Que doit-il faire ? (ex: Analyser, Synthétiser...)
+3. LE TON : (ex: Formel, neutre, institutionnel...)
+4. LES CONTRAINTES : Ce qu'il ne doit JAMAIS faire.
+                </textarea>
+            </div>
+
+            <!-- Amorces -->
+            <div class="mb-5">
+                <label class="openai-label">Amorces de conversation</label>
+                <div class="info-badge">
+                    <i class="fas fa-mouse-pointer mr-1"></i> Raccourcis utilisateurs :
+                </div>
+                <div class="space-y-2">
+                    <input type="text" class="openai-input pedagogical-text"
+                           value="Exemple de tâche récurrente n°1" readonly>
+                    <input type="text" class="openai-input pedagogical-text"
+                           value="Exemple de tâche récurrente n°2" readonly>
+                </div>
+            </div>
+
+            <!-- Base de connaissances -->
+            <div class="mb-5">
+                <label class="openai-label">Base de connaissances</label>
+                <div class="border border-gray-200 rounded-lg p-4 bg-white mt-1 text-center border-dashed">
+                    <p class="text-sm font-medium text-blue-600 mb-2">
+                        Déposez vos fichiers de référence ici
+                    </p>
+                    <p class="text-xs text-gray-500">
+                        (Règlement intérieur, Projet d'établissement...)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Fonctionnalités -->
+            <div class="mb-8">
+                <label class="openai-label">Fonctionnalités</label>
+                <div class="space-y-3 mt-2">
+                    <label class="flex items-start gap-3 opacity-80">
+                        <input type="checkbox" checked disabled class="mt-1 w-4 h-4 text-green-600 rounded">
+                        <div>
+                            <span class="text-sm font-medium text-gray-900">Recherche sur le Web</span>
+                            <p class="text-xs text-gray-500">
+                                Navigation internet pour sources récentes.
+                            </p>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start gap-3 opacity-80">
+                        <input type="checkbox" checked disabled class="mt-1 w-4 h-4 text-green-600 rounded">
+                        <div>
+                            <span class="text-sm font-medium text-gray-900">Interpréteur de code</span>
+                            <p class="text-xs text-gray-500">
+                                Pour analyser Excel, CSV, PDF et graphiques.
+                            </p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- DROITE : APERÇU -->
+        <div class="w-1/2 bg-white flex flex-col relative h-full">
+            <div class="h-12 border-b border-gray-100 flex items-center justify-between px-4 bg-white">
+                <span class="text-sm font-medium text-gray-600">Aperçu</span>
+            </div>
+
+            <div class="absolute top-20 left-10 right-10 z-10">
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 shadow-lg rounded-r">
+                    <h3 class="font-bold text-blue-800 text-sm uppercase mb-1">
+                        Zone de Test (Itération)
+                    </h3>
+                    <p class="text-sm text-blue-700">
+                        Simule la vue utilisateur. Testez ici, corrigez à gauche.
+                    </p>
+                </div>
+            </div>
+
+            <div class="flex-1 flex flex-col items-center justify-end p-8 bg-white pb-20 opacity-50">
+                <div class="w-12 h-12 rounded-full bg-gray-100 mb-4"></div>
+                <div class="w-32 h-4 bg-gray-100 rounded mb-8"></div>
+                <div class="grid grid-cols-2 gap-2 w-full max-w-lg">
+                    <div class="bg-gray-50 h-12 rounded-xl border border-gray-100"></div>
+                    <div class="bg-gray-50 h-12 rounded-xl border border-gray-100"></div>
+                </div>
+            </div>
+
+            <div class="p-4 bg-white absolute bottom-0 w-full border-t border-gray-100">
+                <div class="relative max-w-2xl mx-auto">
+                    <input type="text" placeholder="Zone de saisie..."
+                           class="w-full pl-4 pr-10 py-3 rounded-full border border-gray-200 shadow-sm text-sm bg-gray-50"
+                           disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- VUE 2 : RÉSULTAT FINAL (Front-Office) -->
+    <div id="view-final" class="final-view-container overflow-y-auto">
+
+        <!-- Logo Central -->
+        <div class="w-24 h-24 bg-white border border-gray-200 rounded-full flex items-center justify-center mb-6 shadow-sm relative">
+            <i class="fas fa-cube text-4xl text-gray-300"></i>
+
+            <!-- Annotation Pédagogique -->
+            <div class="annotation-dot" style="top: 0; right: -10px;">
+                1
+                <div class="annotation-tooltip">
+                    Le logo que vous avez chargé à l'étape 1 s'affiche ici.
+                </div>
+            </div>
+        </div>
+
+        <!-- Titre -->
+        <div class="relative">
+            <h1 class="gpt-title">
+                GPT PERDIR – Analyse des circulaires officielles
+            </h1>
+            <!-- Annotation Pédagogique -->
+            <div class="annotation-dot" style="top: -5px; right: -30px;">
+                2
+                <div class="annotation-tooltip">
+                    Le nom défini à l'étape 1. Clair et institutionnel.
+                </div>
+            </div>
+        </div>
+
+        <p class="gpt-author">Par OK</p>
+
+        <!-- Description -->
+        <div class="relative">
+            <p class="gpt-description">
+                Analyse les circulaires officielles pour aider les chefs d'établissement à en extraire rapidement
+                l'essentiel : synthèse, obligations, recommandations, impacts pour l'établissement et plan d'action
+                opérationnel.
+            </p>
+            <!-- Annotation Pédagogique -->
+            <div class="annotation-dot" style="top: 0; right: -30px;">
+                3
+                <div class="annotation-tooltip">
+                    La description définie à l'étape 1. Elle rassure l'utilisateur sur la finalité de l'outil.
+                </div>
+            </div>
+        </div>
+
+        <!-- Boutons d'amorce -->
+        <div class="conversation-starters-grid relative">
+            <!-- Annotation Pédagogique -->
+            <div class="annotation-dot" style="top: -15px; right: -15px;">
+                4
+                <div class="annotation-tooltip">
+                    Les "Amorces" définies à l'étape 3. Ce sont des raccourcis "clés en main".
+                </div>
+            </div>
+
+            <div class="starter-card">
+                Voici une circulaire. Analyse-la en suivant ta méthodologie habituelle.
+            </div>
+            <div class="starter-card">
+                Résume cette circulaire et identifie les points de vigilance majeurs.
+            </div>
+            <div class="starter-card">
+                Donne-moi une synthèse courte de cette circulaire et les actions à mener.
+            </div>
+            <div class="starter-card">
+                Analyse cette circulaire et prépare un texte explicatif pour le CA.
+            </div>
+        </div>
+
+        <!-- Barre de chat fictive -->
+        <div class="w-full max-w-3xl mt-12 relative">
+            <!-- Annotation Pédagogique -->
+            <div class="annotation-dot" style="top: 50%; right: -30px; transform: translateY(-50%);">
+                5
+                <div class="annotation-tooltip">
+                    C'est ici que votre collègue glissera son PDF pour l'analyse.
+                </div>
+            </div>
+
+            <div class="relative">
+                <input type="text" placeholder="Envoyer un message à GPT PERDIR..."
+                       class="w-full pl-12 pr-12 py-4 rounded-full border border-gray-200 shadow-sm text-base focus:outline-none"
+                       disabled>
+                <div class="absolute left-4 top-4 text-gray-400">
+                    <i class="fas fa-paperclip text-lg"></i>
+                </div>
+                <div class="absolute right-4 top-4 text-gray-400 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">
+                    <i class="fas fa-arrow-up"></i>
+                </div>
+            </div>
+
+            <p class="text-xs text-gray-400 mt-3">
+                L'IA peut faire des erreurs. Vérifiez les informations.
+            </p>
+        </div>
+    </div>
+
 </body>
 </html>
