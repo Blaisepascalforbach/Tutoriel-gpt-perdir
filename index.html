@@ -5,30 +5,213 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gabarit Pédagogique : De la Config à l'Utilisation</title>
 
-    <!-- Tailwind pour la mise en forme rapide -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Icônes Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Icônes Font Awesome (facultatif, juste pour les petites icônes) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <style>
-        /* Police proche de celle d'OpenAI */
+        /* RESET SIMPLE */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             background-color: #f9f9f9;
             color: #0d0d0d;
         }
 
-        /* Styles spécifiques OpenAI */
+        /* LAYOUT GLOBAL */
+        .screen {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .topbar {
+            height: 56px;
+            border-bottom: 1px solid #e5e7eb;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+        }
+
+        .topbar-left {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-tab.active {
+            border-bottom-color: #10a37f;
+            color: #10a37f;
+        }
+
+        .topbar button.print-btn {
+            font-size: 0.8rem;
+            color: #6b7280;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .topbar button.print-btn:hover {
+            color: #111827;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* VUE CONFIGURATION : SPLIT VIEW */
+        #view-config {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .config-left,
+        .config-right {
+            width: 50%;
+            background-color: #ffffff;
+        }
+
+        .config-left {
+            border-right: 1px solid #e5e7eb;
+            padding: 24px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .config-right {
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .config-header {
+            height: 48px;
+            border-bottom: 1px solid #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            font-size: 0.85rem;
+            color: #4b5563;
+        }
+
+        /* Boutons Créer / Configurer */
+        .toggle-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .toggle-choices {
+            background-color: #f3f4f6;
+            padding: 4px;
+            border-radius: 999px;
+            display: inline-flex;
+            gap: 2px;
+            margin-bottom: 6px;
+        }
+
+        .toggle-btn {
+            border-radius: 999px;
+            padding: 4px 16px;
+            font-size: 0.8rem;
+            border: none;
+            cursor: default;
+        }
+
+        .toggle-btn.inactive {
+            color: #6b7280;
+            background: none;
+        }
+
+        .toggle-btn.active {
+            background-color: #ffffff;
+            color: #111827;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+        }
+
+        .toggle-text {
+            font-size: 0.65rem;
+            color: #9ca3af;
+            text-align: center;
+            max-width: 260px;
+            line-height: 1.4;
+        }
+
+        /* Champs type OpenAI */
+        .section {
+            margin-bottom: 18px;
+        }
+
+        .openai-label {
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 6px;
+            display: block;
+            color: #202123;
+        }
+
+        .info-badge,
+        .alert-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-bottom: 6px;
+            border: 1px solid;
+        }
+
+        .info-badge {
+            background-color: #eff6ff;
+            color: #1d4ed8;
+            border-color: #dbeafe;
+        }
+
+        .alert-badge {
+            background-color: #fef2f2;
+            color: #b91c1c;
+            border-color: #fee2e2;
+        }
+
         .openai-input {
             border: 1px solid #e5e5e5;
-            border-radius: 0.5rem;
-            padding: 0.75rem;
+            border-radius: 8px;
+            padding: 10px;
             width: 100%;
             font-size: 0.875rem;
             outline: none;
-            transition: border-color 0.15s ease;
-            background-color: white;
+            background-color: #ffffff;
             color: #374151;
+        }
+
+        .openai-textarea {
+            min-height: 210px;
+            resize: vertical;
+            line-height: 1.4;
         }
 
         .pedagogical-text {
@@ -37,175 +220,394 @@
             font-weight: 500;
         }
 
-        .openai-label {
-            font-weight: 600;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-            display: block;
-            color: #202123;
+        .helper-text {
+            font-size: 0.72rem;
+            color: #6b7280;
+            margin-top: 4px;
         }
 
-        /* Indicateurs visuels */
-        .info-badge {
-            display: inline-flex;
-            align-items: center;
-            background-color: #eff6ff;
-            color: #1d4ed8;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            margin-bottom: 6px;
-            border: 1px solid #dbeafe;
+        .dropzone {
+            border: 1px dashed #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+            text-align: center;
+            background-color: #ffffff;
         }
 
-        .alert-badge {
-            display: inline-flex;
-            align-items: center;
-            background-color: #fef2f2;
-            color: #b91c1c;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
-            margin-bottom: 6px;
-            border: 1px solid #fee2e2;
-        }
-
-        /* Onglets de navigation */
-        .nav-tab {
-            padding: 10px 20px;
+        .dropzone-title {
             font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            border-bottom: 2px solid transparent;
+            font-weight: 500;
+            color: #2563eb;
+            margin-bottom: 4px;
+        }
+
+        .dropzone-sub {
+            font-size: 0.72rem;
             color: #6b7280;
         }
 
-        .nav-tab.active {
-            border-bottom: 2px solid #10a37f;
-            color: #10a37f;
+        .checkbox-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+            opacity: 0.8;
         }
 
-        /* Styles Vue Finale */
-        .final-view-container {
-            display: none; /* Masqué par défaut */
+        .checkbox-row input[type="checkbox"] {
+            margin-top: 3px;
+        }
+
+        .checkbox-label-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #111827;
+        }
+
+        .checkbox-label-sub {
+            font-size: 0.72rem;
+            color: #6b7280;
+        }
+
+        /* Logo upload */
+        .logo-upload-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .logo-upload {
+            width: 80px;
+            height: 80px;
+            border-radius: 999px;
+            border: 2px dashed #d1d5db;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f9fafb;
+            text-align: center;
+            padding: 4px;
+            font-size: 0.62rem;
+            color: #6b7280;
+        }
+
+        /* Aperçu (droite) */
+        .preview-banner {
+            position: absolute;
+            top: 80px;
+            left: 40px;
+            right: 40px;
+            background-color: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 12px 16px;
+            border-radius: 6px;
+            box-shadow: 0 4px 10px rgba(15,23,42,0.12);
+        }
+
+        .preview-banner-title {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #1d4ed8;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .preview-banner-text {
+            font-size: 0.8rem;
+            color: #1d4ed8;
+        }
+
+        .preview-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 32px;
+            padding-bottom: 80px;
+            opacity: 0.45;
+        }
+
+        .preview-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 999px;
+            background-color: #f3f4f6;
+            margin-bottom: 12px;
+        }
+
+        .preview-title-placeholder {
+            width: 120px;
+            height: 16px;
+            border-radius: 999px;
+            background-color: #f3f4f6;
+            margin-bottom: 24px;
+        }
+
+        .preview-buttons {
+            width: 100%;
+            max-width: 360px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .preview-button {
+            height: 40px;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+        }
+
+        .preview-input-wrapper {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            border-top: 1px solid #f3f4f6;
+            background-color: #ffffff;
+            padding: 12px 16px;
+        }
+
+        .preview-input {
+            width: 100%;
+            max-width: 560px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .preview-input input {
+            width: 100%;
+            padding: 10px 40px;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            background-color: #f9fafb;
+            font-size: 0.85rem;
+        }
+
+        .preview-input-icon,
+        .preview-input-send {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .preview-input-icon {
+            left: 12px;
+        }
+
+        .preview-input-send {
+            right: 12px;
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+
+        /* VUE FINALE */
+        #view-final {
+            flex: 1;
+            display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100%;
-            background-color: white;
+            background-color: #ffffff;
+            padding: 32px 16px 40px;
             text-align: center;
-            padding: 2rem;
+            overflow-y: auto;
         }
 
-        .final-view-container.active {
+        #view-final.active {
             display: flex;
         }
 
-        .gpt-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #000;
-            margin-bottom: 0.5rem;
+        .final-logo {
+            width: 96px;
+            height: 96px;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            position: relative;
+            box-shadow: 0 1px 4px rgba(15,23,42,0.08);
         }
 
-        .gpt-author {
-            font-size: 0.875rem;
-            color: #666;
-            margin-bottom: 1.5rem;
+        .final-logo i {
+            font-size: 2.2rem;
+            color: #d1d5db;
         }
 
-        .gpt-description {
-            max-width: 600px;
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #333;
-            margin-bottom: 3rem;
-        }
-
-        .conversation-starters-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 colonnes */
-            gap: 12px;
-            max-width: 800px;
-            width: 100%;
-        }
-
-        .starter-card {
-            border: 1px solid #e5e5e5;
-            border-radius: 12px;
-            padding: 16px;
-            text-align: left;
-            font-size: 0.875rem;
-            color: #404040;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            background-color: white;
-        }
-
-        .starter-card:hover {
-            background-color: #f9f9f9;
-        }
-
-        /* Notes pédagogiques Vue Finale */
         .annotation-dot {
             width: 24px;
             height: 24px;
+            border-radius: 999px;
             background-color: #2563eb;
-            color: white;
-            border-radius: 50%;
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
             position: absolute;
-            cursor: help;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            z-index: 50;
+            cursor: default;
         }
 
         .annotation-tooltip {
             position: absolute;
-            background: #1e293b;
-            color: white;
-            padding: 8px 12px;
+            background-color: #0f172a;
+            color: #ffffff;
+            padding: 6px 8px;
             border-radius: 6px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             width: 200px;
-            text-align: left;
-            top: 30px;
+            top: 28px;
             left: 50%;
             transform: translateX(-50%);
             display: none;
-            z-index: 100;
+            text-align: left;
+            z-index: 10;
         }
 
         .annotation-dot:hover .annotation-tooltip {
             display: block;
         }
 
+        .gpt-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .gpt-author {
+            font-size: 0.8rem;
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .gpt-description {
+            max-width: 620px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #374151;
+            margin: 0 auto 32px;
+            position: relative;
+        }
+
+        .conversation-starters-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            width: 100%;
+            max-width: 760px;
+            margin-top: 8px;
+            position: relative;
+        }
+
+        .starter-card {
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            padding: 12px;
+            text-align: left;
+            font-size: 0.85rem;
+            color: #374151;
+            background-color: #ffffff;
+        }
+
+        .starter-card:hover {
+            background-color: #f9fafb;
+        }
+
+        .final-input-wrapper {
+            width: 100%;
+            max-width: 760px;
+            margin-top: 40px;
+            position: relative;
+        }
+
+        .final-input {
+            width: 100%;
+            padding: 12px 44px;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            font-size: 0.9rem;
+        }
+
+        .final-input-icon,
+        .final-input-send {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .final-input-icon {
+            left: 14px;
+        }
+
+        .final-input-send {
+            right: 12px;
+            width: 30px;
+            height: 30px;
+            border-radius: 999px;
+            background-color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+        }
+
+        .final-warning {
+            margin-top: 6px;
+            font-size: 0.72rem;
+            color: #9ca3af;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 960px) {
+            .main {
+                flex-direction: column;
+            }
+            #view-config {
+                flex-direction: column;
+            }
+            .config-left,
+            .config-right {
+                width: 100%;
+            }
+            .preview-banner {
+                display: none;
+            }
+        }
+
         @media print {
-            .no-print { display: none; }
-            body { background-color: white; }
-            .h-screen { height: auto; display: block; }
-            .overflow-y-auto { overflow: visible; }
-            .nav-tabs { display: none; }
-            .final-view-container { display: flex !important; page-break-before: always; margin-top: 2cm;}
-            #view-config { display: block; }
+            .topbar,
+            .preview-input-wrapper {
+                display: none;
+            }
+            .screen {
+                min-height: auto;
+            }
         }
     </style>
 
     <script>
         function switchTab(tabName) {
-            // Masquer toutes les vues
+            // Masquer les vues
             document.getElementById('view-config').style.display = 'none';
             document.getElementById('view-final').classList.remove('active');
 
-            // Désactiver les onglets
+            // Onglets
             document.getElementById('tab-config').classList.remove('active');
             document.getElementById('tab-final').classList.remove('active');
 
-            // Activer la vue demandée
             if (tabName === 'config') {
                 document.getElementById('view-config').style.display = 'flex';
                 document.getElementById('tab-config').classList.add('active');
@@ -217,282 +619,254 @@
     </script>
 </head>
 
-<body class="h-screen flex flex-col overflow-hidden">
+<body>
+<div class="screen">
 
-    <!-- Header Navigation Global -->
-    <div class="h-14 border-b border-gray-200 bg-white flex items-center justify-between px-4 shrink-0 no-print">
-        <div class="flex gap-6">
+    <!-- BARRE DU HAUT -->
+    <div class="topbar">
+        <div class="topbar-left">
             <div id="tab-config" class="nav-tab active" onclick="switchTab('config')">
-                <i class="fas fa-tools mr-2"></i>1. Configuration (Éditeur)
+                <i class="fas fa-tools"></i>
+                <span>1. Configuration (Éditeur)</span>
             </div>
             <div id="tab-final" class="nav-tab" onclick="switchTab('final')">
-                <i class="fas fa-desktop mr-2"></i>2. Résultat Final (Utilisateur)
+                <i class="fas fa-desktop"></i>
+                <span>2. Résultat Final (Utilisateur)</span>
             </div>
         </div>
-        <button onclick="window.print()" class="text-sm text-gray-500 hover:text-gray-900">
-            <i class="fas fa-print mr-1"></i> Imprimer
+        <button class="print-btn" onclick="window.print()">
+            <i class="fas fa-print"></i> Imprimer
         </button>
     </div>
 
-    <!-- VUE 1 : CONFIGURATION (Split View) -->
-    <div id="view-config" class="flex-1 flex overflow-hidden">
+    <div class="main">
 
-        <!-- GAUCHE : CONFIGURER -->
-        <div class="w-1/2 border-r border-gray-200 bg-white overflow-y-auto p-6 relative">
+        <!-- VUE CONFIG -->
+        <div id="view-config">
 
-            <!-- Toggle Créer/Configurer -->
-            <div class="flex flex-col items-center mb-6">
-                <div class="bg-gray-100 p-1 rounded-lg inline-flex mb-2">
-                    <button class="px-4 py-1 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700">
-                        Créer
-                    </button>
-                    <button class="px-4 py-1 rounded-md text-sm font-medium bg-white shadow-sm text-gray-900">
-                        Configurer
-                    </button>
+            <!-- GAUCHE -->
+            <div class="config-left">
+
+                <div class="toggle-wrapper">
+                    <div class="toggle-choices">
+                        <button class="toggle-btn inactive">Créer</button>
+                        <button class="toggle-btn active">Configurer</button>
+                    </div>
+                    <p class="toggle-text">
+                        <strong>Créer :</strong> Assistant conversationnel.<br>
+                        <strong>Configurer :</strong> Mode manuel expert (Celui que vous utilisez).
+                    </p>
                 </div>
-                <p class="text-[10px] text-gray-400 text-center max-w-xs leading-tight">
-                    <strong>Créer :</strong> Assistant conversationnel.<br>
-                    <strong>Configurer :</strong> Mode manuel expert (Celui que vous utilisez).
-                </p>
-            </div>
 
-            <!-- Logo Upload -->
-            <div class="flex justify-center mb-6">
-                <div class="w-20 h-20 rounded-full border-2 border-dashed border-gray-300 flex items-center justify-center bg-gray-50 text-center p-2">
-                    <span class="text-[10px] text-gray-500">
+                <div class="logo-upload-wrapper">
+                    <div class="logo-upload">
                         Cliquez ici pour ajouter le logo de l'établissement
-                    </span>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Nom -->
-            <div class="mb-5">
-                <label class="openai-label">Nom</label>
-                <div class="info-badge">
-                    <i class="fas fa-info-circle mr-1"></i> Ce qui est attendu :
+                <!-- Nom -->
+                <div class="section">
+                    <label class="openai-label">Nom</label>
+                    <div class="info-badge">
+                        <i class="fas fa-info-circle" style="margin-right:4px;"></i>
+                        Ce qui est attendu :
+                    </div>
+                    <input class="openai-input pedagogical-text" value="Le titre officiel de l'outil (ex: GPT PERDIR)" readonly>
+                    <p class="helper-text">Soyez court et explicite.</p>
                 </div>
-                <input type="text" class="openai-input pedagogical-text"
-                       value="Le titre officiel de l'outil (ex: GPT PERDIR)" readonly>
-                <p class="text-xs text-gray-500 mt-1">Soyez court et explicite.</p>
-            </div>
 
-            <!-- Description -->
-            <div class="mb-5">
-                <label class="openai-label">Description</label>
-                <div class="info-badge">
-                    <i class="fas fa-info-circle mr-1"></i> Ce qui est attendu :
+                <!-- Description -->
+                <div class="section">
+                    <label class="openai-label">Description</label>
+                    <div class="info-badge">
+                        <i class="fas fa-info-circle" style="margin-right:4px;"></i>
+                        Ce qui est attendu :
+                    </div>
+                    <input class="openai-input pedagogical-text" value="Une phrase courte expliquant la fonction principale." readonly>
+                    <p class="helper-text">Sert à informer l'utilisateur.</p>
                 </div>
-                <input type="text" class="openai-input pedagogical-text"
-                       value="Une phrase courte expliquant la fonction principale." readonly>
-                <p class="text-xs text-gray-500 mt-1">Sert à informer l'utilisateur.</p>
-            </div>
 
-            <!-- Instructions -->
-            <div class="mb-5">
-                <label class="openai-label">Instructions</label>
-                <div class="alert-badge">
-                    <i class="fas fa-brain mr-1"></i> Cœur du système (Le Prompt) :
-                </div>
-                <textarea class="openai-input pedagogical-text h-56 leading-relaxed" readonly>
+                <!-- Instructions -->
+                <div class="section">
+                    <label class="openai-label">Instructions</label>
+                    <div class="alert-badge">
+                        <i class="fas fa-brain" style="margin-right:4px;"></i>
+                        Cœur du système (Le Prompt) :
+                    </div>
+                    <textarea class="openai-input openai-textarea pedagogical-text" readonly>
 Définissez le "personnage" de l'IA :
 
 1. LE RÔLE : Qui est-il ? (ex: Expert juridique...)
 2. LA MISSION : Que doit-il faire ? (ex: Analyser, Synthétiser...)
 3. LE TON : (ex: Formel, neutre, institutionnel...)
 4. LES CONTRAINTES : Ce qu'il ne doit JAMAIS faire.
-                </textarea>
-            </div>
-
-            <!-- Amorces -->
-            <div class="mb-5">
-                <label class="openai-label">Amorces de conversation</label>
-                <div class="info-badge">
-                    <i class="fas fa-mouse-pointer mr-1"></i> Raccourcis utilisateurs :
+                    </textarea>
                 </div>
-                <div class="space-y-2">
-                    <input type="text" class="openai-input pedagogical-text"
-                           value="Exemple de tâche récurrente n°1" readonly>
-                    <input type="text" class="openai-input pedagogical-text"
-                           value="Exemple de tâche récurrente n°2" readonly>
+
+                <!-- Amorces -->
+                <div class="section">
+                    <label class="openai-label">Amorces de conversation</label>
+                    <div class="info-badge">
+                        <i class="fas fa-mouse-pointer" style="margin-right:4px;"></i>
+                        Raccourcis utilisateurs :
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:6px;">
+                        <input class="openai-input pedagogical-text" value="Exemple de tâche récurrente n°1" readonly>
+                        <input class="openai-input pedagogical-text" value="Exemple de tâche récurrente n°2" readonly>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Base de connaissances -->
-            <div class="mb-5">
-                <label class="openai-label">Base de connaissances</label>
-                <div class="border border-gray-200 rounded-lg p-4 bg-white mt-1 text-center border-dashed">
-                    <p class="text-sm font-medium text-blue-600 mb-2">
-                        Déposez vos fichiers de référence ici
-                    </p>
-                    <p class="text-xs text-gray-500">
-                        (Règlement intérieur, Projet d'établissement...)
-                    </p>
+                <!-- Base de connaissances -->
+                <div class="section">
+                    <label class="openai-label">Base de connaissances</label>
+                    <div class="dropzone">
+                        <p class="dropzone-title">Déposez vos fichiers de référence ici</p>
+                        <p class="dropzone-sub">(Règlement intérieur, Projet d'établissement...)</p>
+                    </div>
                 </div>
-            </div>
 
-            <!-- Fonctionnalités -->
-            <div class="mb-8">
-                <label class="openai-label">Fonctionnalités</label>
-                <div class="space-y-3 mt-2">
-                    <label class="flex items-start gap-3 opacity-80">
-                        <input type="checkbox" checked disabled class="mt-1 w-4 h-4 text-green-600 rounded">
-                        <div>
-                            <span class="text-sm font-medium text-gray-900">Recherche sur le Web</span>
-                            <p class="text-xs text-gray-500">
-                                Navigation internet pour sources récentes.
-                            </p>
-                        </div>
-                    </label>
-
-                    <label class="flex items-start gap-3 opacity-80">
-                        <input type="checkbox" checked disabled class="mt-1 w-4 h-4 text-green-600 rounded">
-                        <div>
-                            <span class="text-sm font-medium text-gray-900">Interpréteur de code</span>
-                            <p class="text-xs text-gray-500">
-                                Pour analyser Excel, CSV, PDF et graphiques.
-                            </p>
-                        </div>
-                    </label>
+                <!-- Fonctionnalités -->
+                <div class="section" style="margin-bottom:32px;">
+                    <label class="openai-label">Fonctionnalités</label>
+                    <div style="margin-top:8px;">
+                        <label class="checkbox-row">
+                            <input type="checkbox" checked disabled>
+                            <div>
+                                <div class="checkbox-label-title">Recherche sur le Web</div>
+                                <div class="checkbox-label-sub">Navigation internet pour sources récentes.</div>
+                            </div>
+                        </label>
+                        <label class="checkbox-row">
+                            <input type="checkbox" checked disabled>
+                            <div>
+                                <div class="checkbox-label-title">Interpréteur de code</div>
+                                <div class="checkbox-label-sub">Pour analyser Excel, CSV, PDF et graphiques.</div>
+                            </div>
+                        </label>
+                    </div>
                 </div>
+
             </div>
 
-        </div>
+            <!-- DROITE -->
+            <div class="config-right">
+                <div class="config-header">
+                    <span>Aperçu</span>
+                </div>
 
-        <!-- DROITE : APERÇU -->
-        <div class="w-1/2 bg-white flex flex-col relative h-full">
-            <div class="h-12 border-b border-gray-100 flex items-center justify-between px-4 bg-white">
-                <span class="text-sm font-medium text-gray-600">Aperçu</span>
-            </div>
-
-            <div class="absolute top-20 left-10 right-10 z-10">
-                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 shadow-lg rounded-r">
-                    <h3 class="font-bold text-blue-800 text-sm uppercase mb-1">
-                        Zone de Test (Itération)
-                    </h3>
-                    <p class="text-sm text-blue-700">
+                <div class="preview-banner">
+                    <div class="preview-banner-title">Zone de Test (Itération)</div>
+                    <div class="preview-banner-text">
                         Simule la vue utilisateur. Testez ici, corrigez à gauche.
-                    </p>
+                    </div>
+                </div>
+
+                <div class="preview-body">
+                    <div class="preview-avatar"></div>
+                    <div class="preview-title-placeholder"></div>
+                    <div class="preview-buttons">
+                        <div class="preview-button"></div>
+                        <div class="preview-button"></div>
+                    </div>
+                </div>
+
+                <div class="preview-input-wrapper">
+                    <div class="preview-input">
+                        <input type="text" placeholder="Zone de saisie..." disabled>
+                        <div class="preview-input-icon">
+                            <i class="fas fa-paperclip"></i>
+                        </div>
+                        <div class="preview-input-send">
+                            <i class="fas fa-arrow-up"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="flex-1 flex flex-col items-center justify-end p-8 bg-white pb-20 opacity-50">
-                <div class="w-12 h-12 rounded-full bg-gray-100 mb-4"></div>
-                <div class="w-32 h-4 bg-gray-100 rounded mb-8"></div>
-                <div class="grid grid-cols-2 gap-2 w-full max-w-lg">
-                    <div class="bg-gray-50 h-12 rounded-xl border border-gray-100"></div>
-                    <div class="bg-gray-50 h-12 rounded-xl border border-gray-100"></div>
-                </div>
-            </div>
-
-            <div class="p-4 bg-white absolute bottom-0 w-full border-t border-gray-100">
-                <div class="relative max-w-2xl mx-auto">
-                    <input type="text" placeholder="Zone de saisie..."
-                           class="w-full pl-4 pr-10 py-3 rounded-full border border-gray-200 shadow-sm text-sm bg-gray-50"
-                           disabled>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- VUE 2 : RÉSULTAT FINAL (Front-Office) -->
-    <div id="view-final" class="final-view-container overflow-y-auto">
-
-        <!-- Logo Central -->
-        <div class="w-24 h-24 bg-white border border-gray-200 rounded-full flex items-center justify-center mb-6 shadow-sm relative">
-            <i class="fas fa-cube text-4xl text-gray-300"></i>
-
-            <!-- Annotation Pédagogique -->
-            <div class="annotation-dot" style="top: 0; right: -10px;">
-                1
-                <div class="annotation-tooltip">
-                    Le logo que vous avez chargé à l'étape 1 s'affiche ici.
-                </div>
-            </div>
         </div>
 
-        <!-- Titre -->
-        <div class="relative">
-            <h1 class="gpt-title">
-                GPT PERDIR – Analyse des circulaires officielles
-            </h1>
-            <!-- Annotation Pédagogique -->
-            <div class="annotation-dot" style="top: -5px; right: -30px;">
-                2
-                <div class="annotation-tooltip">
-                    Le nom défini à l'étape 1. Clair et institutionnel.
+        <!-- VUE FINALE -->
+        <div id="view-final">
+
+            <div class="final-logo">
+                <i class="fas fa-cube"></i>
+                <div class="annotation-dot" style="top:-6px; right:-8px;">
+                    1
+                    <div class="annotation-tooltip">
+                        Le logo que vous avez chargé à l'étape 1 s'affiche ici.
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <p class="gpt-author">Par OK</p>
+            <div style="position:relative; margin-bottom:8px;">
+                <h1 class="gpt-title">GPT PERDIR – Analyse des circulaires officielles</h1>
+                <div class="annotation-dot" style="top:-10px; right:-18px;">
+                    2
+                    <div class="annotation-tooltip">
+                        Le nom défini à l'étape 1. Clair et institutionnel.
+                    </div>
+                </div>
+            </div>
 
-        <!-- Description -->
-        <div class="relative">
-            <p class="gpt-description">
+            <p class="gpt-author">Par OK</p>
+
+            <div class="gpt-description" style="position:relative;">
                 Analyse les circulaires officielles pour aider les chefs d'établissement à en extraire rapidement
                 l'essentiel : synthèse, obligations, recommandations, impacts pour l'établissement et plan d'action
                 opérationnel.
-            </p>
-            <!-- Annotation Pédagogique -->
-            <div class="annotation-dot" style="top: 0; right: -30px;">
-                3
-                <div class="annotation-tooltip">
-                    La description définie à l'étape 1. Elle rassure l'utilisateur sur la finalité de l'outil.
-                </div>
-            </div>
-        </div>
-
-        <!-- Boutons d'amorce -->
-        <div class="conversation-starters-grid relative">
-            <!-- Annotation Pédagogique -->
-            <div class="annotation-dot" style="top: -15px; right: -15px;">
-                4
-                <div class="annotation-tooltip">
-                    Les "Amorces" définies à l'étape 3. Ce sont des raccourcis "clés en main".
+                <div class="annotation-dot" style="top:-12px; right:-18px;">
+                    3
+                    <div class="annotation-tooltip">
+                        La description définie à l'étape 1. Elle rassure l'utilisateur sur la finalité de l'outil.
+                    </div>
                 </div>
             </div>
 
-            <div class="starter-card">
-                Voici une circulaire. Analyse-la en suivant ta méthodologie habituelle.
-            </div>
-            <div class="starter-card">
-                Résume cette circulaire et identifie les points de vigilance majeurs.
-            </div>
-            <div class="starter-card">
-                Donne-moi une synthèse courte de cette circulaire et les actions à mener.
-            </div>
-            <div class="starter-card">
-                Analyse cette circulaire et prépare un texte explicatif pour le CA.
-            </div>
-        </div>
+            <div class="conversation-starters-grid">
+                <div class="annotation-dot" style="top:-18px; right:-18px;">
+                    4
+                    <div class="annotation-tooltip">
+                        Les "Amorces" définies à l'étape 3. Ce sont des raccourcis "clés en main".
+                    </div>
+                </div>
 
-        <!-- Barre de chat fictive -->
-        <div class="w-full max-w-3xl mt-12 relative">
-            <!-- Annotation Pédagogique -->
-            <div class="annotation-dot" style="top: 50%; right: -30px; transform: translateY(-50%);">
-                5
-                <div class="annotation-tooltip">
-                    C'est ici que votre collègue glissera son PDF pour l'analyse.
+                <div class="starter-card">
+                    Voici une circulaire. Analyse-la en suivant ta méthodologie habituelle.
+                </div>
+                <div class="starter-card">
+                    Résume cette circulaire et identifie les points de vigilance majeurs.
+                </div>
+                <div class="starter-card">
+                    Donne-moi une synthèse courte de cette circulaire et les actions à mener.
+                </div>
+                <div class="starter-card">
+                    Analyse cette circulaire et prépare un texte explicatif pour le CA.
                 </div>
             </div>
 
-            <div class="relative">
-                <input type="text" placeholder="Envoyer un message à GPT PERDIR..."
-                       class="w-full pl-12 pr-12 py-4 rounded-full border border-gray-200 shadow-sm text-base focus:outline-none"
-                       disabled>
-                <div class="absolute left-4 top-4 text-gray-400">
-                    <i class="fas fa-paperclip text-lg"></i>
+            <div class="final-input-wrapper">
+                <div class="annotation-dot" style="top:50%; right:-18px; transform:translateY(-50%);">
+                    5
+                    <div class="annotation-tooltip">
+                        C'est ici que votre collègue glissera son PDF pour l'analyse.
+                    </div>
                 </div>
-                <div class="absolute right-4 top-4 text-gray-400 bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">
+
+                <input class="final-input" type="text" placeholder="Envoyer un message à GPT PERDIR..." disabled>
+                <div class="final-input-icon">
+                    <i class="fas fa-paperclip"></i>
+                </div>
+                <div class="final-input-send">
                     <i class="fas fa-arrow-up"></i>
                 </div>
+                <div class="final-warning">
+                    L'IA peut faire des erreurs. Vérifiez les informations.
+                </div>
             </div>
 
-            <p class="text-xs text-gray-400 mt-3">
-                L'IA peut faire des erreurs. Vérifiez les informations.
-            </p>
         </div>
-    </div>
 
+    </div>
+</div>
 </body>
 </html>
